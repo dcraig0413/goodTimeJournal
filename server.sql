@@ -1,4 +1,3 @@
-\c postgres
 CREATE DATABASE journals;
 \c journals
 
