@@ -1,6 +1,6 @@
 //[label /pages/index.js]
 import Link from "next/link";
-import React, { Component } from "react";
+import React from "react";
 
 export default function () {
   return (
