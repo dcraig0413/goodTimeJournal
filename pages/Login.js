@@ -1,9 +1,20 @@
 import Link from "next/link";
+import { useState } from "react";
+import { loginUser } from "../lib/utils";
 
 export default function SignUp() {
-  const handleError = () => {
-    alert("Invalid Login Information!");
-  };
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [validUser, setValidUser] = useState(false);
+
+  async function handleLogin() {
+    try {
+      const user = await loginUser(username, password);
+      console.log(user);
+    } catch (err) {
+      alert(err + ": Invalid Login Information!");
+    }
+  }
 
   return (
     <div
@@ -18,15 +29,25 @@ export default function SignUp() {
       <h1>Log In</h1>
       <div>
         <p> Username: </p>
-        <input type="text" id="fname" name="fname" />
+        <input
+          type="text"
+          id="fname"
+          name="fname"
+          onChange={e => setUsername(e.target.value)}
+        />
         <p> Password: </p>
-        <input type="password" id="fname" name="fname" />
+        <input
+          type="password"
+          id="fname"
+          name="fname"
+          onChange={e => setPassword(e.target.value)}
+        />
 
         <br />
         <br />
 
         <Link href="/Login">
-          <button onClick={() => handleError()}>Sign In</button>
+          <button onClick={() => handleLogin()}>Sign In</button>
         </Link>
       </div>
     </div>

@@ -41,17 +41,24 @@ app.delete("/delete-user", async (req, res) => {
   }
 });
 
-app.get("/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   const username = req.query.username;
   const password = req.query.password;
   try {
-    const template = "SELECT * FROM users WHERE username=$1 AND password=$2";
-    const response = await pool.query(template, [username, password]);
-    if (response) {
-      res.json("success");
+    const query = "SELECT password from users where username = $1";
+    const result = await pool.query(query, [username]);
+    if (result.rowCount == 1) {
+      console.log(result.rows[0].password);
+      if (await argon2.verify(result.rows[0].password, password)) {
+        res.json("Log In successful");
+      } else {
+        res.json("Password incorrect");
+      }
+    } else {
+      res.json("username not found");
     }
   } catch (err) {
-    console.log(err);
+    console.log("ERROR " + err);
   }
 });
 
