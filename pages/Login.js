@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 export default function SignUp() {
   const handleError = () => {
     alert("Invalid Login Information!");
@@ -14,7 +15,7 @@ export default function SignUp() {
         borderStyle: "groove",
       }}
     >
-      <h1>Sign In</h1>
+      <h1>Log In</h1>
       <div>
         <p> Username: </p>
         <input type="text" id="fname" name="fname" />
