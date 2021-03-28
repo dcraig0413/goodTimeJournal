@@ -1,7 +1,7 @@
 import Link from "next/link";
 export default function SignUp() {
   const handleError = () => {
-    alert("invalid creditentials");
+    alert("Invalid Login Information!");
   };
 
   return (
@@ -10,7 +10,7 @@ export default function SignUp() {
         margin: "auto auto",
         width: "800px",
         textAlign: "center",
-        background: "#daf6db",
+        background: "#6699cc",
         borderStyle: "groove",
       }}
     >
@@ -21,12 +21,12 @@ export default function SignUp() {
         <p> Password: </p>
         <input type="password" id="fname" name="fname" />
 
-        <br></br>
+        <br />
+        <br />
 
         <Link href="/Login">
           <button onClick={() => handleError()}>Sign In</button>
         </Link>
-        <p>test </p>
       </div>
     </div>
   );
