@@ -26,6 +26,7 @@ export default function SignUp() {
         <Link href="/Login">
           <button onClick={() => handleError()}>Sign In</button>
         </Link>
+        <p>test </p>
       </div>
     </div>
   );
