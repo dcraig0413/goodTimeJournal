@@ -49,7 +49,7 @@ app.post("/login", async (req, res) => {
     const result = await pool.query(query, [username]);
     if (result.rowCount == 1) {
       console.log(result.rows[0].password);
-      if (await argon2.verify(result.rows[0].password, password)) {
+      if (result.rows[0] === password) {
         res.json("Log In successful");
       } else {
         res.json("Password incorrect");
@@ -63,5 +63,5 @@ app.post("/login", async (req, res) => {
 });
 
 app.listen(app.get("port"), () => {
-  console.log('Server at: http://localhost:${app.get("port")}/');
+  console.log('Server at: http://localhost:${app.get("port")}');
 });
