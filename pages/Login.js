@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { useState } from "react";
 import { loginUser } from "../lib/utils";
+import Button from "@material-ui/core/Button";
+import { TextField } from "material-ui";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import Header from "../components/Header";
 
 export default function SignUp() {
   const [username, setUsername] = useState("");
@@ -9,8 +13,9 @@ export default function SignUp() {
 
   async function handleLogin() {
     try {
-      const user = await loginUser(username, password);
-      console.log(user);
+      await loginUser(username, password);
+      alert("Login succesful");
+      setValidUser(true);
     } catch (err) {
       alert(err + ": Invalid Login Information!");
     }
@@ -28,28 +33,53 @@ export default function SignUp() {
     >
       <h1>Log In</h1>
       <div>
-        <p> Username: </p>
-        <input
-          type="text"
-          id="fname"
-          name="fname"
-          onChange={e => setUsername(e.target.value)}
-        />
-        <p> Password: </p>
-        <input
-          type="password"
-          id="fname"
-          name="fname"
-          onChange={e => setPassword(e.target.value)}
-        />
+        <MuiThemeProvider>
+          Username
+          <br />
+          <TextField
+            id="user"
+            variant="filled"
+            label="Username"
+            type="text"
+            borderStyle=""
+            onChange={e => setUsername(e.target.value)}
+            onKeyPress={e => {
+              if (e.key === "Enter") {
+                handleLogin();
+                e.preventDefault();
+              }
+            }}
+          />
+          <form style={{ margin: 20 }}>
+            Password
+            <br />
+            <TextField
+              id="pass"
+              variant="outlined"
+              label="Password"
+              type="password"
+              onChange={e => setPassword(e.target.value)}
+              onKeyPress={e => {
+                if (e.key === "Enter") {
+                  handleLogin();
+                  e.preventDefault();
+                }
+              }}
+            />
+          </form>
+        </MuiThemeProvider>
 
-        <br />
-        <br />
-
-        <Link href="/Login">
-          <button onClick={() => handleLogin()}>Sign In</button>
-        </Link>
+        <Button
+          style={{ margin: 15 }}
+          variant="contained"
+          onClick={() => {
+            handleLogin();
+          }}
+        >
+          Sign In
+        </Button>
       </div>
+      or <Header />
     </div>
   );
 }

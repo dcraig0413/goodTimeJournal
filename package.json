@@ -8,16 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Louiebandz/goodTimeJournal.git"
+    "url": "git+https://github.com/dcraig0413/goodTimeJournal.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Louiebandz/goodTimeJournal/issues"
+    "url": "https://github.com/dcraig0413/goodTimeJournal/issues"
   },
-  "homepage": "https://github.com/Louiebandz/goodTimeJournal#readme",
+  "homepage": "https://github.com/dcraig0413/goodTimeJournal#readme",
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
     "@material-ui/styles": "^4.11.3",
     "express": "^4.17.1",
     "material-ui": "^0.20.2",

@@ -1,6 +1,5 @@
 // adding basic node file
 const express = require("express");
-// const app = express();
 
 const bodyParser = require("body-parser");
 // var dateFormat = require('dateformat');
@@ -14,9 +13,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const Pool = require("pg").Pool;
 const config = {
   host: "localhost",
-  user: "", // add user when we have database
+  user: "postgres", // add user when we have database
   password: "",
-  database: "",
+  database: "journals",
 };
 
 const pool = new Pool(config);
@@ -32,8 +31,7 @@ app.delete("/delete-user", async (req, res) => {
   const username = req.query.username;
   const password = req.query.password;
   try {
-    const template =
-      "DELETE FROM OUR_TABLE_NAME WHERE username=$1 AND password=$2"; // add table
+    const template = "DELETE FROM users WHERE username=$1 AND password=$2"; // add table
     const response = await pool.query(template, [username, password]);
     res.json({ status: "deleted" });
   } catch (err) {
@@ -47,15 +45,16 @@ app.post("/login", async (req, res) => {
   try {
     const query = "SELECT password from users where username = $1";
     const result = await pool.query(query, [username]);
+    console.log(result.rows);
     if (result.rowCount == 1) {
       console.log(result.rows[0].password);
       if (result.rows[0] === password) {
-        res.json("Log In successful");
+        console.log("Log In successful");
       } else {
-        res.json("Password incorrect");
+        console.log("Password incorrect");
       }
     } else {
-      res.json("username not found");
+      console.log("username not found");
     }
   } catch (err) {
     console.log("ERROR " + err);
@@ -63,5 +62,5 @@ app.post("/login", async (req, res) => {
 });
 
 app.listen(app.get("port"), () => {
-  console.log('Server at: http://localhost:${app.get("port")}');
+  console.log(`Server at: http://localhost:${app.get("port")}`);
 });
