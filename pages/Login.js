@@ -4,7 +4,6 @@ import Button from "@material-ui/core/Button";
 import { TextField } from "material-ui";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import Header from "../components/Header";
-import Homepage from "./tempHomepage";
 import Router from "next/router";
 
 export default function SignUp() {
@@ -33,38 +32,35 @@ export default function SignUp() {
   }
 
   return (
-    <MuiThemeProvider>
-      <div
-        style={{
-          margin: "auto auto",
-          width: "800px",
-          textAlign: "center",
-          background: "#6699cc",
-          borderStyle: "groove",
-        }}
-      >
-        <h1>Log In</h1>
-        <div>
-          Username
-          <br />
+    <div
+      style={{
+        margin: "auto auto",
+        width: "90vw",
+        textAlign: "center",
+        background: "#6699cc",
+        borderStyle: "groove",
+      }}
+    >
+      <h1>Log In</h1>
+      <div>
+        <br />
+        <MuiThemeProvider>
           <TextField
+            style={{ marginTop: -35 }}
             id="user"
-            variant="filled"
-            label="Username"
+            floatingLabelText="Username"
             type="text"
             onChange={e => setUsername(e.target.value)}
           />
-          <form style={{ margin: 20 }}>
-            Password
-            <br />
-            <TextField
-              id="pass"
-              variant="outlined"
-              label="Password"
-              type="password"
-              onChange={e => setPassword(e.target.value)}
-            />
-          </form>
+
+          <br />
+          <TextField
+            id="pass"
+            floatingLabelText="Password"
+            type="password"
+            onChange={e => setPassword(e.target.value)}
+          />
+          <br />
           <Button
             style={{ margin: 15 }}
             variant="contained"
@@ -74,12 +70,12 @@ export default function SignUp() {
           >
             Sign In
           </Button>
-        </div>
-        or{" "}
-        <Button size="small" variant="text">
-          <Header />
-        </Button>
+        </MuiThemeProvider>
       </div>
-    </MuiThemeProvider>
+      Don't have an account?{" "}
+      <Button size="small" variant="text">
+        <Header />
+      </Button>
+    </div>
   );
 }
