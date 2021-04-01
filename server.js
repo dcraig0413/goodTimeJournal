@@ -1,20 +1,31 @@
 // adding basic node file
 const express = require("express");
+const cors = require("cors");
 
 const bodyParser = require("body-parser");
 // var dateFormat = require('dateformat');
 
 const app = express();
 app.set("port", 3001);
+// const argon2 = require("argon2");
 
 app.use(bodyParser.json({ type: "application/json" }));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 const Pool = require("pg").Pool;
 const config = {
   host: "localhost",
   user: "postgres", // add user when we have database
-  password: "",
+  password: "postgres",
   database: "journals",
 };
 
@@ -39,22 +50,21 @@ app.delete("/delete-user", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/login", cors(), async (req, res) => {
   const username = req.query.username;
   const password = req.query.password;
+
   try {
-    const query = "SELECT password from users where username = $1";
+    const query = "SELECT password FROM users WHERE username = $1";
     const result = await pool.query(query, [username]);
-    console.log(result.rows);
-    if (result.rowCount == 1) {
-      console.log(result.rows[0].password);
-      if (result.rows[0] === password) {
+    if (result.rowCount > 0) {
+      if (result.rows[0].password === password) {
         console.log("Log In successful");
       } else {
         console.log("Password incorrect");
       }
     } else {
-      console.log("username not found");
+      console.log("Username not found");
     }
   } catch (err) {
     console.log("ERROR " + err);

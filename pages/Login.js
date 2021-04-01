@@ -17,23 +17,23 @@ export default function SignUp() {
       alert("Login succesful");
       setValidUser(true);
     } catch (err) {
-      alert(err + ": Invalid Login Information!");
+      console.log(err);
     }
   }
 
   return (
-    <div
-      style={{
-        margin: "auto auto",
-        width: "800px",
-        textAlign: "center",
-        background: "#6699cc",
-        borderStyle: "groove",
-      }}
-    >
-      <h1>Log In</h1>
-      <div>
-        <MuiThemeProvider>
+    <MuiThemeProvider>
+      <div
+        style={{
+          margin: "auto auto",
+          width: "800px",
+          textAlign: "center",
+          background: "#6699cc",
+          borderStyle: "groove",
+        }}
+      >
+        <h1>Log In</h1>
+        <div>
           Username
           <br />
           <TextField
@@ -41,14 +41,7 @@ export default function SignUp() {
             variant="filled"
             label="Username"
             type="text"
-            borderStyle=""
             onChange={e => setUsername(e.target.value)}
-            onKeyPress={e => {
-              if (e.key === "Enter") {
-                handleLogin();
-                e.preventDefault();
-              }
-            }}
           />
           <form style={{ margin: 20 }}>
             Password
@@ -59,27 +52,20 @@ export default function SignUp() {
               label="Password"
               type="password"
               onChange={e => setPassword(e.target.value)}
-              onKeyPress={e => {
-                if (e.key === "Enter") {
-                  handleLogin();
-                  e.preventDefault();
-                }
-              }}
             />
           </form>
-        </MuiThemeProvider>
-
-        <Button
-          style={{ margin: 15 }}
-          variant="contained"
-          onClick={() => {
-            handleLogin();
-          }}
-        >
-          Sign In
-        </Button>
+          <Button
+            style={{ margin: 15 }}
+            variant="contained"
+            onClick={() => {
+              handleLogin();
+            }}
+          >
+            Sign In
+          </Button>
+        </div>
+        or <Header />
       </div>
-      or <Header />
-    </div>
+    </MuiThemeProvider>
   );
 }

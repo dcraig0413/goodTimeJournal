@@ -20,6 +20,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/styles": "^4.11.3",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "material-ui": "^0.20.2",
     "next": "^10.0.9",
