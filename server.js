@@ -59,15 +59,41 @@ app.post("/login", cors(), async (req, res) => {
     const result = await pool.query(query, [username]);
     if (result.rowCount > 0) {
       if (result.rows[0].password === password) {
-        console.log("Log In successful");
+        console.log("Login successful!");
+        res.sendStatus(200);
       } else {
-        console.log("Password incorrect");
+        console.log("Password incorrect!");
+        res.sendStatus(401);
       }
     } else {
-      console.log("Username not found");
+      console.log("Username not found!");
+      res.sendStatus(401);
     }
   } catch (err) {
     console.log("ERROR " + err);
+  }
+});
+
+app.delete("/deleteEntry", cors(), async (req, res) => {
+  const entry = req.query.id;
+  const user = req.query.u_id;
+
+  try {
+    const query = "SELECT id FROM journalEntries WHERE id = $1 AND u_id = $2";
+    const result = await pool.query(query, [entry, user]);
+    if (result.rowCount > 0) {
+      if (result.rows[0].id === journal && result.rows[0].u_id === user) {
+        const deleteMutation = "DELETE FROM journalEntries WHERE id = $1";
+        const deleteResult = await pool.query(deleteMutation, [entry]);
+        console.log("Entry deleted.");
+      } else {
+        console.log("Entry could not be deleted.");
+      }
+    } else {
+      console.log("Entry does not exist.");
+    }
+  } catch (err) {
+    console.log("ERROR: " + err);
   }
 });
 

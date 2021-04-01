@@ -1,21 +1,32 @@
-import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loginUser } from "../lib/utils";
 import Button from "@material-ui/core/Button";
 import { TextField } from "material-ui";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import Header from "../components/Header";
+import Homepage from "./tempHomepage";
+import Router from "next/router";
 
 export default function SignUp() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [validUser, setValidUser] = useState(false);
 
+  useEffect(() => {
+    if (validUser) {
+      Router.push("/tempHomepage");
+    }
+  });
+
   async function handleLogin() {
+    setValidUser(false);
     try {
-      await loginUser(username, password);
-      alert("Login succesful");
-      setValidUser(true);
+      setValidUser(await (await loginUser(username, password)).ok);
+      if (validUser === true) {
+        console.log("Login Successful!");
+      } else {
+        console.log("Invalid Credentials!");
+      }
     } catch (err) {
       console.log(err);
     }
@@ -64,7 +75,10 @@ export default function SignUp() {
             Sign In
           </Button>
         </div>
-        or <Header />
+        or{" "}
+        <Button size="small" variant="text">
+          <Header />
+        </Button>
       </div>
     </MuiThemeProvider>
   );
