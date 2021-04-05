@@ -74,6 +74,18 @@ app.post("/login", cors(), async (req, res) => {
   }
 });
 
+app.get("/getEntry", async (req, res) => {
+  const id = req.query.id;
+
+  try {
+  } catch (err) {
+    const temp = "SELECT * FROM journalentries WHERE u_id=$1";
+    const resp = await pool.query(temp, [id]);
+
+    res.json({ status: resp.rows });
+  }
+});
+
 app.delete("/deleteEntry", cors(), async (req, res) => {
   const entry = req.query.id;
   const user = req.query.u_id;

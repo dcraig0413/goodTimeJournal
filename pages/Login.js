@@ -6,10 +6,11 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import Header from "../components/Header";
 import Router from "next/router";
 
-export default function SignUp() {
+export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [validUser, setValidUser] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (validUser) {
@@ -21,6 +22,7 @@ export default function SignUp() {
     setValidUser(false);
     try {
       setValidUser(await (await loginUser(username, password)).ok);
+      setUser(await await loginUser(username, password));
       if (validUser === true) {
         console.log("Login Successful!");
       } else {
