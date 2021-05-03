@@ -1,7 +1,7 @@
 import Link from "next/link";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
-export default function Homepage() {
+export default function Homepage(user) {
   return (
     <MuiThemeProvider>
       <div

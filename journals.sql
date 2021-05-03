@@ -7,15 +7,16 @@ create table users (
     id INT PRIMARY KEY,
     username TEXT NOT NULL,
     email TEXT NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    count INT
 );
 
-insert into users (id, username, email, password) values
-    (1,'bfrulla','bfrulla@mail.umw.edu', 'test'),
-    (2,'jhilker','jhilker@mail.umw.edu', 'test'),
-    (3,'dlambo','dlambertson@mail.umw.edu', 'test'),
-    (4,'bmarg','bmarg@mail.umw.edu', 'test'),
-    (5,'lmaldonado','lmaldonado@mail.umw.edu', 'test');
+insert into users (id, username, email, password,count) values
+    (1,'bfrulla','bfrulla@mail.umw.edu', 'test',0),
+    (2,'jhilker','jhilker@mail.umw.edu', 'test',0),
+    (3,'dlambo','dlambertson@mail.umw.edu', 'test',0),
+    (4,'bmarg','bmarg@mail.umw.edu', 'test',0),
+    (5,'lmaldonado','lmaldonado@mail.umw.edu', 'test',0);
 
 create table journals (
     id SERIAL PRIMARY KEY,

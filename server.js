@@ -53,24 +53,54 @@ app.delete("/delete-user", async (req, res) => {
 app.post("/login", cors(), async (req, res) => {
   const username = req.query.username;
   const password = req.query.password;
-
   try {
-    const query = "SELECT password FROM users WHERE username = $1";
-    const result = await pool.query(query, [username]);
-    if (result.rowCount > 0) {
-      if (result.rows[0].password === password) {
-        console.log("Login successful!");
-        res.sendStatus(200);
-      } else {
-        console.log("Password incorrect!");
-        res.sendStatus(401);
-      }
+    const temp = "SELECT count FROM users WHERE username=$1";
+    const resp = await pool.query(temp, [username]);
+    console.log(resp.rows[0].count);
+    if (resp.rows[0].count >= 10) {
+      // not sure what number to put
+      console.log("Account is locked!");
+      res.json({ status: "Account locked!" });
     } else {
-      console.log("Username not found!");
-      res.sendStatus(401);
+      try {
+        const query = "SELECT password FROM users WHERE username = $1";
+        const result = await pool.query(query, [username]);
+        // console.log(results.row[0].username);
+        if (result.rowCount > 0) {
+          if (result.rows[0].password === password) {
+            console.log("Login successful!");
+            res.sendStatus(200);
+            const template = "UPDATE users SET count=0 WHERE username=$1";
+            const response = await pool.query(template, [username]);
+          } else {
+            console.log("Password incorrect!");
+            res.sendStatus(401);
+            const template = "UPDATE users SET count=count+1 WHERE username=$1";
+            const response = await pool.query(template, [username]);
+          }
+        } else {
+          console.log("Username not found!");
+          res.sendStatus(401);
+        }
+      } catch (err) {
+        console.log("ERROR " + err);
+      }
     }
   } catch (err) {
-    console.log("ERROR " + err);
+    console.error("ERROR1 " + err);
+  }
+});
+
+app.get("/user-info", async (req, res) => {
+  const username = req.query.username;
+  try {
+    const userInfo = await pool.query(
+      "SELECT * FROM users WHERE username = $1",
+      [username]
+    );
+    console.log(userInfo.rows[0]);
+  } catch (err) {
+    console.log(err);
   }
 });
 
@@ -78,12 +108,11 @@ app.get("/getEntry", async (req, res) => {
   const id = req.query.id;
 
   try {
-  } catch (err) {
     const temp = "SELECT * FROM journalentries WHERE u_id=$1";
     const resp = await pool.query(temp, [id]);
 
     res.json({ status: resp.rows });
-  }
+  } catch (err) {}
 });
 
 app.delete("/deleteEntry", cors(), async (req, res) => {

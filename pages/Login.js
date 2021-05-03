@@ -1,31 +1,47 @@
 import { useEffect, useState } from "react";
-import { loginUser } from "../lib/utils";
+import { loginUser, getUser } from "../lib/utils";
 import Button from "@material-ui/core/Button";
-import { TextField } from "material-ui";
+import { TextField } from "@material-ui/core";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import Header from "../components/Header";
+import Homepage from "./tempHomepage.js";
 import Router from "next/router";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [validUser, setValidUser] = useState(false);
-  const [user, setUser] = useState(null);
+  const [isValidUser, setValidUser] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [error, setError] = useState(false);
+
+  // useEffect(() => {
+  //   if (isValidUser === true) {
+  //     console.log(getUser(username));
+  //   } else {
+  //     setLoggedInUser(null);
+  //   }
+  // }, [isValidUser]);
 
   useEffect(() => {
-    if (validUser) {
+    if (isValidUser) {
       Router.push("/tempHomepage");
+    } else {
+      Router.push("/Login");
     }
-  });
+  }, [isValidUser]);
 
   async function handleLogin() {
     setValidUser(false);
     try {
-      setValidUser(await (await loginUser(username, password)).ok);
-      setUser(await await loginUser(username, password));
-      if (validUser === true) {
+      const user = await loginUser(username, password);
+      if (user) setValidUser(user.ok);
+      if (user.status === 200) {
         console.log("Login Successful!");
+        const temp = getUser(username);
+        console.log(temp);
       } else {
+        setError(true);
+        setValidUser(false);
         console.log("Invalid Credentials!");
       }
     } catch (err) {
@@ -33,7 +49,9 @@ export default function Login() {
     }
   }
 
-  return (
+  return isValidUser ? (
+    <Homepage user={username} />
+  ) : (
     <div
       style={{
         margin: "auto auto",
@@ -56,7 +74,10 @@ export default function Login() {
           />
 
           <br />
+
           <TextField
+            error={error}
+            helperText="Invalid Credentials"
             id="pass"
             floatingLabelText="Password"
             type="password"

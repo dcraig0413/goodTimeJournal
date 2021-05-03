@@ -27,6 +27,10 @@ export default function App() {
           <Link href="/Login">
             <button style={{ margin: "10px" }}>Login</button>
           </Link>
+
+          <Link href="/DeletePost">
+            <button style={{ margin: "10px" }}>Delete Post</button>
+          </Link>
         </div>
       </div>
     </div>
